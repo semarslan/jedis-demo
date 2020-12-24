@@ -3,6 +3,7 @@ package io.redis.jedis.jedisdemo.dao;
 import io.redis.jedis.jedisdemo.model.Programmer;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ProgrammerRepository {
 
@@ -19,4 +20,10 @@ public interface ProgrammerRepository {
 
     Long getProgrammersListCount();
 
+//    SET
+    void AddToProgrammersSet(Programmer ... programmers);
+
+    Set<Programmer> getProgrammersSetMembers();
+
+    boolean isSetMember(Programmer programmer);
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.redis.jedis.jedisdemo.services.ProgrammerService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class ProgrammerController {
@@ -59,5 +60,32 @@ public class ProgrammerController {
     @RequestMapping("/programmers-list/count")
     public Long getProgrammerListCount() {
         return programmerService.getProgrammersListCount();
+    }
+
+    /**
+     * programmer set
+     * @param programmer
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/programmers-set")
+    public void addToProgrammersSet(@RequestBody Programmer ... programmer) {
+        programmerService.AddToProgrammersSet(programmer);
+    }
+
+    /**
+     * listedeki tüm programmerları getirir
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value ="/programmers-set")
+    public Set<Programmer> getProgrammerSetMembers()  {
+        return programmerService.getProgrammersSetMembers();
+    }
+
+    /**
+     * set'te programmer var mı kontrol eder.
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value ="/programmers-set/member")
+    public boolean isSetMember(@RequestBody Programmer programmer)  {
+        return programmerService.isSetMember(programmer);
     }
 }
