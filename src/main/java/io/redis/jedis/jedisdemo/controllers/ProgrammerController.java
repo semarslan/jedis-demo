@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.redis.jedis.jedisdemo.services.ProgrammerService;
 
+import java.util.List;
+
 @RestController
 public class ProgrammerController {
 
@@ -30,5 +32,32 @@ public class ProgrammerController {
     public String readString(@PathVariable String id) {
         return programmerService.getProgrammerAsString(id);
 
+    }
+
+    /**
+     * listeye programmer ekler
+     * @param programmer
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/programmers-list")
+    public void addToProgrammerList(@RequestBody Programmer programmer) {
+        programmerService.AddToProgrammersList(programmer);
+    }
+
+    /**
+     * listedeki tüm programmerları getirir
+     * @return
+     */
+    @RequestMapping("/programmers-list")
+    public List<Programmer> getProgrammerListMembers()  {
+        return programmerService.getProgrammersListMembers();
+    }
+
+    /**
+     * listedeki tüm programmer verilerinin sayısını verir.
+     * @return
+     */
+    @RequestMapping("/programmers-list/count")
+    public Long getProgrammerListCount() {
+        return programmerService.getProgrammersListCount();
     }
 }
