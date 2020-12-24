@@ -1,4 +1,4 @@
-package services;
+package io.redis.jedis.jedisdemo.services;
 
 public interface ProgrammerService {
 

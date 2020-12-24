@@ -1,4 +1,4 @@
-package config;
+package io.redis.jedis.jedisdemo.config;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +9,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.util.StringUtils;
 
 @Configuration
@@ -16,22 +17,17 @@ public class SpringConf {
 
     @Value("${redis.host}")
     private String host;
-
-    @Value("${redis.port}")
+    @Value("${redis.password}")
     private String password;
-
     @Value("${redis.port}")
     private int port;
 
     @Value("${redis.jedis.pool.max-total}")
     private int maxTotal;
-
     @Value("${redis.jedis.pool.max-idle}")
     private int maxIdle;
-
     @Value("${redis.jedis.pool.min-idle}")
     private int minIdle;
-
 
     /**
      * Create jedis client with pool configuration
@@ -39,14 +35,13 @@ public class SpringConf {
      */
     @Bean
     public JedisClientConfiguration getJedisClientConfiguration() {
-        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder JedisPoolingClientConfigurationBuilder = (
-                JedisClientConfiguration.JedisPoolingClientConfigurationBuilder) JedisClientConfiguration.builder();
-        GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
-        genericObjectPoolConfig.setMaxTotal(maxTotal);
-        genericObjectPoolConfig.setMaxIdle(maxIdle);
-        genericObjectPoolConfig.setMinIdle(minIdle);
-
-        return JedisPoolingClientConfigurationBuilder.poolConfig(genericObjectPoolConfig).build();
+        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder JedisPoolingClientConfigurationBuilder = (JedisClientConfiguration.JedisPoolingClientConfigurationBuilder) JedisClientConfiguration
+                .builder();
+        GenericObjectPoolConfig GenericObjectPoolConfig = new GenericObjectPoolConfig();
+        GenericObjectPoolConfig.setMaxTotal(maxTotal);
+        GenericObjectPoolConfig.setMaxIdle(maxIdle);
+        GenericObjectPoolConfig.setMinIdle(minIdle);
+        return JedisPoolingClientConfigurationBuilder.poolConfig(GenericObjectPoolConfig).build();
     }
 
     /**
@@ -61,7 +56,7 @@ public class SpringConf {
             redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
         }
         redisStandaloneConfiguration.setPort(port);
-        return new JedisConnectionFactory(redisStandaloneConfiguration);
+        return new JedisConnectionFactory(redisStandaloneConfiguration, getJedisClientConfiguration());
     }
 
     /**
@@ -69,10 +64,10 @@ public class SpringConf {
      * @return
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        //noinspection SpringConfigurationProxyMethods
-        template.setConnectionFactory(getJedisConnectionFactory());
-        return template;
+    public RedisTemplate redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+        redisTemplate.setConnectionFactory(getJedisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
     }
 }

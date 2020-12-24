@@ -1,4 +1,4 @@
-package dao;
+package io.redis.jedis.jedisdemo.dao;
 
 public interface ProgrammerRepository {
 

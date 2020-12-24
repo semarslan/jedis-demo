@@ -1,4 +1,4 @@
-package dao;
+package io.redis.jedis.jedisdemo.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,6 +1,6 @@
-package services;
+package io.redis.jedis.jedisdemo.services;
 
-import dao.ProgrammerRepository;
+import io.redis.jedis.jedisdemo.dao.ProgrammerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

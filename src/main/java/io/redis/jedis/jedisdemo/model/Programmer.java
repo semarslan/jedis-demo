@@ -1,4 +1,4 @@
-package model;
+package io.redis.jedis.jedisdemo.model;
 
 import java.io.Serializable;
 
@@ -7,7 +7,6 @@ public class Programmer implements Serializable {
     private int id;
     private String company;
     private String name;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,11 +37,6 @@ public class Programmer implements Serializable {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public int hashCode() {
         int result = getId();
